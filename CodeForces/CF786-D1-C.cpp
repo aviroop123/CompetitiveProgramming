@@ -16,7 +16,7 @@ struct node{
         l = r = NULL;
         x = 0;
     }
-} *version[N];
+} *version[2 * N];
 deque<node> cache;
 int a[N], p[N], temp[N], n;
 node *getnode(){
@@ -25,47 +25,42 @@ node *getnode(){
 }
 void build(node * &cur, int s,int e){
     cur = getnode();
+    if(e == n + 1)
+        cur -> x = n;
     if(s == e) return;
     int m = (s + e) >> 1;
     build(cur -> l, s, m);
     build(cur -> r, m + 1, e);
 }
-void update(node * &cur, node * &prev, int s, int e, int idx){
+void update(node * &cur, node * &prev, int s, int e, int idx,int val){
     cur = getnode();
-    cur -> x = prev -> x + 1;
+    cur -> x = prev -> x + val;
     if(s == e) return;
     int m = (s + e) >> 1;
     if(idx <= m){
-        update(cur -> l, prev -> l, s, m, idx);
+        update(cur -> l, prev -> l, s, m, idx, val);
         cur -> r = prev -> r;
     }
     else{
-        update(cur -> r, prev -> r, m + 1, e, idx);
+        update(cur -> r, prev -> r, m + 1, e, idx, val);
         cur -> l = prev -> l;
     }
 }
-int query(node * &cur, int s,int e,int l,int r){
-    if(s > r || l > r)
-        return 0;
-    else if(l <= s && e <= r)
-        return cur -> x;
-    int m = (s + e) >> 1;
-    return query(cur -> l, s, m, l, r) + query(cur -> r, m + 1, e, l, r);
-}
-int getdist(int pp,int k){
-    int val = query(version[n], 0, n, 0, pp - 1) - pp + 1;
-    if(val <= k)
-        return n;
-    int l = pp, r = n;
-    while(r - l > 1){
-        int m = (l + r) >> 1;
-        val = query(version[m], 0, n, 0, pp - 1) - pp + 1;
-        if(val <= k)
-            l = m;
-        else
-            r = m;
+int query(node * &cur, int s,int e,int &k){
+    if(cur -> x < k){
+        k -= cur -> x;
+        return n + 1;
     }
-    return l;
+    if(s == e)
+        return s;
+    int m = (s + e) >> 1;
+    int q = query(cur -> l, s, m, k);
+    if(q == n + 1)
+        q = query(cur -> r, m + 1, e, k);
+    return q;
+}
+int get(int pp,int k){
+    return query(version[2 * pp], 0, n + 1, k);
 }
 signed main(){
     //freopen("inp.txt", "r", stdin);
@@ -73,18 +68,22 @@ signed main(){
     cin >> n;
     for(int i = 1; i <= n; i++){
         cin >> a[i];
+        temp[a[i]] = n + 1;
+    }
+    for(int i = n; i >= 1; i--){
         p[i] = temp[a[i]];
         temp[a[i]] = i;
     }
-    build(version[0], 0, n);
-    for(int i = 1; i <= n; i++)
-        update(version[i], version[i - 1], 0, n, p[i]);
+    build(version[2 * n + 2], 0, n + 1);
+    for(int i = n; i >= 1; i--){
+        update(version[2 * i + 1], version[2 * i + 2], 0, n + 1, p[i], -1);
+        update(version[2 * i], version[2 * i + 1], 0, n + 1, i, 1);
+    }
     for(int k = 1; k <= n; k++){
-        int pp = 1;
-        int ans = 0;
+        int pp = 1, ans = 0;
         while(pp <= n){
-            int j = getdist(pp, k);
-            pp = j + 1;
+            int j = get(pp, k + 1);
+            pp = j;
             ans++;
         }
         cout << ans << " ";
