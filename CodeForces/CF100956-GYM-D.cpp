@@ -1,3 +1,8 @@
+// Solution Idea : First I make pairs (a, b) and sort them according to a first, then b. Then the first player will always take the rightmost element in the worst case.
+// Let 1 denote that item is taken by 2nd player and 0 denote the opposite. So you would get a sequence of 01010101...0 . Now,
+// my solution uses the fact that you can only shift 1's to the left. So I take greedily from the first. I maintain a priority queue
+// which gives me the maximum value of b that I can take. 
+
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
