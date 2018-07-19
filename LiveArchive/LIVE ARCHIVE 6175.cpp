@@ -1,3 +1,8 @@
+// Solution uses 3D dp. Let dp[i][j][k] denote the expected value of the rightmost position with i operations left,
+// j is the current position, k is the rightmost position which occured till now. Therefore, dp[n][p][r] = (1 - pl - pr) * dp[n - 1][p][r](if he stays at the same position)
+//+ pl * dp[n - 1][p - 1][r](if he moves left) + pr * dp[n - 1][p + 1][max(r, p + 1)](if he moves right).
+// To reduce memory consumption, the first dimension can be reduced to 2 since we need only the last value.
+
 #include<bits/stdc++.h>
 using namespace std;
 
