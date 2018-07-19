@@ -3,7 +3,7 @@
 // gcd(a1, a2, .. an, m) divides b. Now we do some operations just like extended gcd, take the smallest of the coefficients greater than 0 and mod all other coefficients 
 // with this value. After some operations, only 1 element will remain non-zero, this element is the gcd. After the operations, we can build the
 // new soln from the original one just like extended gcd.
-// Time complexity : O(N * N * log(N))
+// Time complexity : O(N * log(MAX))
 
 #include<bits/stdc++.h>
 using namespace std;
