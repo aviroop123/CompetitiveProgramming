@@ -1,3 +1,12 @@
+// First sort the edges according to x + d(i.e. the end point). Now iterate through all the edges, and maintain a two segtrees. 
+// First will store at coordinate x, min_time_to_reach_this_vertex - x. The other will store min_time_to_reach_this_vertex + x.
+// Now iterate through all the edges. Let the values of this edge be x, d, t, p. We will then update the segtree like this :
+// min_time[x + d] = min_time[x - p] + p + t. The two segment trees will help in calculating min_time[x - p]. For large values,
+// I have used dynamic segtree. And to get the soln, store an additional value id which will keep track of the ramp used.
+
+// for i <= x - p, min_time[x - p] = min_time[i] - i + (x - p) (calculated using 1st segtree) (*1)
+// for i >= x - p, min_time[x - p] = min_time[i] + i - (x - p) (calculated using 2nd segtree) (*2)
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -81,9 +90,9 @@ signed main(){
     forn(j, 1, n){
         int i = z[j].se;
         if(x[i] - p[i] >= 0){
-            pii q1 = query(tr2, x[i] - p[i], inf);
+            pii q1 = query(tr2, x[i] - p[i], inf); // (*2)
             q1.fi -= (x[i] - p[i]);
-            pii q2 = query(tr1, 0, x[i] - p[i]);
+            pii q2 = query(tr1, 0, x[i] - p[i]); // (*1)
             q2.fi += (x[i] - p[i]);
             int id, val;
             if(q1.fi <= q2.fi)
