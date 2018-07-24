@@ -1,3 +1,10 @@
+// Let dp[i][j] be the maximum value you can achieve with the first i elements of a and first j elements of b. It can be easily
+// proved that to get maximum value of dp[i][j], either a[i] or b[j] will be included in the product. So, the dp recurrence is as follows:
+// dp[i][j] = max(dp[i - 1][k - 1] + a[i] * b[k] - sumb(k + 1, j)^2, dp[k - 1][j - 1] + a[k] * b[j] - suma(k + 1, i)^2) for all possible k. This can be calculated efficiently
+// by considering rows and columns separately and forming cht for each row and column and updating accordingly.
+// Here suma(i, j) = a[i] + a[i + 1] + ... + a[j]
+//      sumb(i, j) = b[i] + b[i + 1] + ... + b[j]
+
 #include<bits/stdc++.h>
 using namespace std;
  
@@ -84,7 +91,7 @@ signed main(){
         cin >> b[i];
         sb[i] = sb[i - 1] + b[i];
     }
-    forn(i, 1, n){
+    forn(i, 1, n){ // Base cases
         dp[i][0] = -sa[i] * sa[i];
         dp[0][i] = -sb[i] * sb[i];
     }
