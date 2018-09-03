@@ -1,0 +1,118 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+typedef long double f80;
+#define int long long int
+#define pb push_back
+#define fi first
+#define se second
+//#define all(x) x.begin(), x.end()
+#define fr(i, a, b) for(int i = a; i <= b; i++)
+#define IO ios :: sync_with_stdio(0), cin.tie(0), cout.tie(0)
+#define endl '\n'
+
+const int N = 100005;
+
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long LL;
+
+#define PII       pair<int,int>
+#define all(c)    c.begin(),c.end()
+#define sz(c)     (int)c.size()
+#define clr(c)    c.clear()
+#define pb        push_back
+#define mp        make_pair
+#define cin(x)    scanf("%d",&x)
+#define MOD   1000000007
+#define EPS   1E-10
+
+struct line
+{
+  f80 m, c;
+  line(f80 _M = 0, f80 _C = 0)
+  {
+    m = _M;
+    c = _C;
+  }
+};
+
+// IMPORTANT : add lines in increasing order of slope
+
+const f80 one = 1.0;
+
+struct cht
+{
+  vector<line> lines;
+
+  cht()
+  {
+    clr(lines);
+  }
+
+  f80 get_x(line l1, line l2)
+  {
+    return (one * l1.c - l2.c) / (one * l2.m - l1.m);
+  }
+
+  bool bad(line l1, line l2, line l3)
+  {
+    f80 x12 = get_x(l1,l2);
+    f80 x13 = get_x(l1,l3);
+    return (x12 >= x13);
+  }
+
+  void add_line(f80 M, f80 C)
+  {
+    line l(M,C);
+    while(sz(lines) >= 2 && bad(lines[sz(lines) - 2], lines[sz(lines) - 1], l) )
+      lines.pop_back();
+    lines.pb(l);
+  }
+
+  f80 eval(line L, f80 x)
+  {
+    return (x * L.m + L.c);
+  }
+
+  f80 getMax(f80 x)
+  {
+    int lo = 0, hi = sz(lines);
+    assert(lo != hi);
+    while(hi - lo > 1)
+    {
+      int mid = (lo + hi) >> 1;
+      f80 v1 = eval(lines[mid - 1], x);
+      f80 v2 = eval(lines[mid], x);
+      if(v1 > v2)
+        hi = mid;
+      else
+        lo = mid;
+    }
+    return eval(lines[lo], x);
+  }
+};
+
+cht dp;
+int f[N], p[N], t[N];
+signed main(){
+    //freopen("inp.txt", "r", stdin);
+    int n, m;
+    cin >> n >> m;
+    fr(i, 1, n){
+        cin >> f[i];
+        p[i] = p[i - 1] + f[i];
+        dp.add_line(p[i], -p[i - 1]);
+    }
+    int ans = 0;
+    fr(i, 1, m){
+        cin >> t[i];
+    }
+    fr(i, 1, m - 1){
+        ans += round(t[i + 1] * max(dp.getMax(t[i] / ((f80)t[i + 1])), (f80)0));
+    }
+    ans += p[n] * t[m];
+    cout << ans << endl;
+    return 0;
+}
