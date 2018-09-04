@@ -1,3 +1,8 @@
+// Let P[i] be the sum of T[j] for j = 1 to i. So, it turns out that the delay required for the (i + 1)th item after sending the 
+// ith item is Z[i] = max(P[j] * T[i] - P[j - 1] * T[i + 1]) for all j. So the total delay will be the sum of all delays. To calculate it for
+// all i, we use cht to complete the task in O(N * logN). We can write Z[i] as T[i + 1] * max(P[j] * (T[i] / T[i + 1]) - P[j - 1]). Note 
+// that the expression inside the max function is of the form m * x + c.
+
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
