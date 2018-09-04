@@ -1,3 +1,5 @@
+// This is a standard problem of DSU on tree. https://codeforces.com/blog/entry/44351. To reduce the complexity, we have to maintain an array 
+// instead of a map. Overall complexity : O(N * log(N) * Z) where Z is the alphabet size(22).
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long int ll;
