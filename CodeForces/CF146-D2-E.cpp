@@ -1,4 +1,3 @@
-// Blog: https://cp-algorithms.com/graph/bridge-searching-online.html
 #pragma GCC optimize ("Ofast")
 #include<bits/stdc++.h>
 using namespace std;
