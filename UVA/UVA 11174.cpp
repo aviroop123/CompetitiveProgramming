@@ -1,3 +1,4 @@
+// Basically we are given some trees and we have to arrange them like a toposort. So first connect the trees with a single vertex, say (n + 1). Then run a dp, dp[u] stores the number of ways to arrange the subtree of u. Now the reccurence is as follows: First fix u on the first position. Then you are left with sz[u] - 1 positions. For a child v, we choose out of these sz[u] - 1 positions, sz[v] positions and arrange the subtree of v. Complexity: O(n) + some preprocessing for calculating ncr.
 #pragma GCC optimize ("Ofast")
 #include "bits/stdc++.h"
 #include "ext/pb_ds/assoc_container.hpp"
