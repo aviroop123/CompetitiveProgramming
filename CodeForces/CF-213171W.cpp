@@ -1,3 +1,4 @@
+// Solution : The only constraint is that number of characters in the left half must be equal to the right half for each character. Let's say the count of characters are c1, c2, ... ck. So the number of such strings are (n!/c1!c2!...ck!)^2. We have to sum this for ci >= 0 && ci <= n. Consider the polynomial P(x) = (1 + x/(1!)^2 + x^2/(2!)^2 + ... x^n/(n!)^2)^k. The coefficient of x^n will give us sum of (1/c1!c2!...ck!)^2 s.t. 0 <= ci <= n. Ans = n! * n! * coefficient of x^n in P(x).
 #pragma GCC optimize ("Ofast")
 #include "bits/stdc++.h"
 #include "ext/pb_ds/assoc_container.hpp"
